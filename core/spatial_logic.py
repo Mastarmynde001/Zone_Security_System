@@ -1,4 +1,4 @@
-# Zone Security System - Spatial Logic Module
+
 import time
 from shapely.geometry import Polygon, box
 
@@ -9,7 +9,6 @@ class ZoneIntrusionLogic:
         zone_coordinates: List of (x, y) tuples defining the polygon.
         """
         try:
-            # Create a mathematical polygon from our coordinates
             self.restricted_zone = Polygon(zone_coordinates)
             if not self.restricted_zone.is_valid:
                 print("WARNING [Spatial Logic]: Polygon is invalid (e.g., lines cross).")
@@ -17,10 +16,7 @@ class ZoneIntrusionLogic:
             print(f"CRITICAL [Spatial Logic]: Failed to create zone. Error: {e}")
             self.restricted_zone = None
 
-        # Convert threshold to seconds for easier math with time.time()
         self.threshold_sec = threshold_ms / 1000.0 
-        
-        # State management: keeps track of {tracker_id: time_entered_zone}
         self.active_intrusions = {}
 
     def evaluate_frame(self, tracked_objects):
@@ -35,7 +31,6 @@ class ZoneIntrusionLogic:
         current_frame_ids = set()
 
         for obj in tracked_objects:
-            # Safely extract data
             try:
                 obj_id = obj.get("id")
                 x1, y1, x2, y2 = obj.get("bbox")
@@ -58,7 +53,7 @@ class ZoneIntrusionLogic:
                     # Calculate how long they have been inside
                     time_inside = time.time() - self.active_intrusions[obj_id]
 
-                    # Trigger alarm if they exceed your 3000ms threshold
+                    # Trigger alarm if they exceed 3000ms
                     if time_inside >= self.threshold_sec:
                         triggered_alarms.append({
                             "id": obj_id,
@@ -73,7 +68,7 @@ class ZoneIntrusionLogic:
             except Exception as e:
                 print(f"ERROR [Spatial Logic]: Math failure on ID {obj_id}. {e}")
 
-        # Cleanup: If an ID disappears from the camera entirely, remove their timer
+        # If an ID disappears from the camera entirely, remove their timer
         lost_ids = set(self.active_intrusions.keys()) - current_frame_ids
         for lost_id in lost_ids:
             del self.active_intrusions[lost_id]
