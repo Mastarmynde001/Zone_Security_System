@@ -1,4 +1,3 @@
-# Zone Security System - Video Buffer Utility
 import cv2
 import os
 import threading
@@ -28,7 +27,6 @@ class VideoBuffer:
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         filename = os.path.join(self.output_dir, f"event_ID{intruder_id}_{timestamp}.mp4")
         
-        # Get frame dimensions from the first frame in the buffer
         h, w = self.frame_buffer[0].shape[:2]
         
         fourcc = cv2.VideoWriter_fourcc(*'mp4v')
