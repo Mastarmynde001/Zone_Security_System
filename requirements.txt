@@ -1,0 +1,5 @@
+# Zone Security System - Dependencies
+ultralytics==8.4.20      # (Installs the latest YOLO and ByteTrack)
+opencv-python           # (For camera feed and drawing the UI)
+numpy                   # (For matrix math and frame arrays)
+shapely                 # (For calculating polygon intersections instantly)

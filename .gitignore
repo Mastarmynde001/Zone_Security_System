@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+*.pyc
+*.stackdump
+.DS_Store
+Thumbs.db
+
+output/
+*.mp4
+*.pt
+
+convert_gif.py
+final_fix.py
